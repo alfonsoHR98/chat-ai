@@ -1,9 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,12 +11,12 @@ datasource db {
 }
 
 model User {
-  id String @id @default(cuid())
-  name String
-  email String @unique
-  password String
-  role Role @default(USER)
-  chats Chat[]
+  id      String    @id @default(cuid())
+  email   String    @unique
+  name    String
+  image   String
+  role    Role      @default(USER)
+  chats   Chat[]
 }
 
 enum Role {
@@ -28,19 +25,24 @@ enum Role {
 }
 
 model Chat {
-  id String @id @default(cuid())
-  userId String
-  user User @relation(fields: [userId], references: [id])
-  messages Message[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  name      String
+  messages  Message[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([userId]) // Índice para mejorar el rendimiento de las consultas por usuario
 }
 
 model Message {
-  id String @id @default(cuid())
-  chatId String
-  chat Chat @relation(fields: [chatId], references: [id])
-  content String
+  id        String   @id @default(cuid())
+  chatId    String
+  chat      Chat     @relation(fields: [chatId], references: [id])
+  content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([chatId]) // Índice para mejorar el rendimiento de las consultas por chat
 }
