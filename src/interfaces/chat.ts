@@ -1,12 +1,12 @@
 export interface SidebarProps {
-    chats: Chat[];
+  chats: Chat[];
 }
 
 export interface Chat {
   id: string;
   userId: string;
   name: string;
-  Messages: Message[];
+  messages: Message[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -15,8 +15,14 @@ export interface Message {
   id: string;
   chatId: string;
   content: string;
+  role: Role;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export enum Role {
+  assistant,
+  user,
 }
 
 export interface UserInt {

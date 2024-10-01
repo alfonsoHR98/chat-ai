@@ -4,12 +4,14 @@ import { Input, Button, Select, SelectItem } from "@nextui-org/react";
 import { FaPaperclip } from "react-icons/fa";
 import { IoSendOutline } from "react-icons/io5";
 import { SiOpenai } from "react-icons/si";
+import { Message, Role } from "@interfaces/chat";
 import { models } from "@interfaces/models";
 
-function Chat() {
+function ChatComponent({ messages }: { messages: Message[] }) {
   return (
     <div className="w-full flex flex-col my-3 mr-3">
-      <div className="w-full">
+      {/* Selector de modelo que ocupa todo el ancho */}
+      <div className="w-full mb-3">
         <Select
           className="max-w-64 w-full"
           variant="faded"
@@ -30,8 +32,30 @@ function Chat() {
           ))}
         </Select>
       </div>
-      <div className="flex-1 overflow-auto">{/* Messages */}</div>
-      <div className="flex gap-2 my-2 h-auto items-end">
+
+      {/* Contenedor de mensajes que ocupa el espacio restante */}
+      <div className="flex-1 h-0 overflow-auto mb-3">
+        <div className="flex flex-col gap-2">
+          {messages
+            .slice()
+            .reverse()
+            .map((message) => (
+              <div
+                key={message.id}
+                className={`p-2 m-2 rounded-lg max-w-xs ${
+                  message.role === Role.user
+                    ? "self-end bg-blue-500 text-white"
+                    : "self-start bg-gray-300 text-black"
+                }`}
+              >
+                {message.content}
+              </div>
+            ))}
+        </div>
+      </div>
+
+      {/* Input y botones al final */}
+      <div className="flex gap-2 items-end">
         <Button isIconOnly color="default" variant="bordered">
           <FaPaperclip />
         </Button>
@@ -49,4 +73,4 @@ function Chat() {
   );
 }
 
-export default Chat;
+export default ChatComponent;

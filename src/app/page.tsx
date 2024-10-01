@@ -5,8 +5,8 @@ import Chat from "@components/Chat";
 function Home() {
   return (
     <div className="h-screen flex flex-row gap-4">
-      <Sidebar />
-      <Chat />
+      <Sidebar chats={[]} />
+      <Chat messages={[]} />
     </div>
   );
 }

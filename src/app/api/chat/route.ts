@@ -1,13 +1,24 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
+import prisma from "@lib/prisma"
 
-export async function GET() {
-  return NextResponse.json({ message: "GET /api/chat" });
+interface Data {
+  userId: string;
+  name: string;
 }
 
-export async function POST() {
-  return NextResponse.json({ message: "POST /api/chat" });
-}
+export async function POST(req: NextRequest) {
+  try {
+    const data: Data = await req.json();
 
-export async function DELETE() {
-  return NextResponse.json({ message: "DELETE /api/chat" });
+    const result = await prisma.chat.create({
+      data: {
+        userId: data.userId,
+        name: data.name
+      }
+    });
+
+    return NextResponse.json(result, { status: 201 });
+  } catch (error) {
+    return NextResponse.json({ message: "Error", error }, { status: 500 });
+  }
 }
