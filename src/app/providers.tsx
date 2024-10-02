@@ -2,6 +2,7 @@
 import { SessionProvider } from "next-auth/react";
 import { NextUIProvider } from "@nextui-org/react";
 import { ReactNode } from "react";
+import { ChatProvider } from "@context/ChatContext";
 
 interface ProvidersProps {
   children: ReactNode;
@@ -10,7 +11,9 @@ interface ProvidersProps {
 function Providers({ children }: ProvidersProps) {
   return (
     <SessionProvider>
-      <NextUIProvider>{children}</NextUIProvider>
+      <NextUIProvider>
+        <ChatProvider>{children}</ChatProvider>
+      </NextUIProvider>
     </SessionProvider>
   );
 }

@@ -3,10 +3,10 @@ import React from "react";
 import { FaPlus } from "react-icons/fa";
 import { TbLogout } from "react-icons/tb";
 import { Button, User } from "@nextui-org/react";
-import { SidebarProps, UserInt } from "@interfaces/chat";
+import { SidebarProps, UserInt, Chat } from "@interfaces/chat";
 import { useSession } from "next-auth/react";
 
-function Sidebar({ chats }: SidebarProps) {
+function Sidebar(chats: Chat[]) {
   const { data } = useSession();
   const user = data?.user as UserInt | undefined;
 

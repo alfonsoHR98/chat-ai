@@ -34,7 +34,7 @@ function ChatComponent({ messages }: { messages: Message[] }) {
       </div>
 
       {/* Contenedor de mensajes que ocupa el espacio restante */}
-      <div className="flex-1 h-0 overflow-auto mb-3">
+      <div className="flex-1 h-0 overflow-auto mb-3 w-4/5 mx-auto">
         <div className="flex flex-col gap-2">
           {messages
             .slice()
@@ -55,7 +55,7 @@ function ChatComponent({ messages }: { messages: Message[] }) {
       </div>
 
       {/* Input y botones al final */}
-      <div className="flex gap-2 items-end">
+      <div className="flex gap-2 items-end w-4/5 mx-auto">
         <Button isIconOnly color="default" variant="bordered">
           <FaPaperclip />
         </Button>
