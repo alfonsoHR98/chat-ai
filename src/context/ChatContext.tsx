@@ -5,14 +5,20 @@ import axios from "axios";
 
 export const ChatContext = createContext<{
   chats: Chat[];
+  selectedChat: Chat | null;
   loadChats: (id: string) => Promise<void>;
   createChat: (chat: Chat) => Promise<void>;
   deleteChat: (id: string) => Promise<void>;
+  selectChat: (id: string) => void;
+  sendMessage: (idChat: string, message: Message) => void;
 }>({
   chats: [],
+  selectedChat: null,
   loadChats: async () => { },
   createChat: async () => { },
   deleteChat: async () => { },
+  selectChat: () => { },
+  sendMessage: async () => { },
 });
 
 export const useChat = () => {
@@ -43,12 +49,27 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
     setChats(chats.filter((chat) => chat.id !== id))
   }
 
+  async function selectChat(id: string) {
+    setSelectedChat(chats.find((chat) => chat.id === id) || null);
+  }
+
+  async function sendMessage(idChat: string,message: Message) {
+    const res = await axios.post("/api/message/"+idChat, message);
+    setSelectedChat({
+      ...selectedChat,
+      messages: [...selectedChat?.messages, res.data]
+    });
+  }
+
   return (
     <ChatContext.Provider value={{
       chats,
+      selectedChat,
       loadChats,
       createChat,
-      deleteChat
+      deleteChat,
+      selectChat,
+      sendMessage,
     }}>
       {children}
     </ChatContext.Provider>

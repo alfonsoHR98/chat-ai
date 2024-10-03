@@ -12,6 +12,9 @@ export async function GET(req: Request, { params }: Params) {
       where: {
         userId: params.id,
       },
+      include: {
+        messages: true,
+      }
     });
 
     if (!chats)

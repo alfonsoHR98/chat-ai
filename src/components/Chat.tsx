@@ -4,10 +4,15 @@ import { Input, Button, Select, SelectItem } from "@nextui-org/react";
 import { FaPaperclip } from "react-icons/fa";
 import { IoSendOutline } from "react-icons/io5";
 import { SiOpenai } from "react-icons/si";
-import { Message, Role } from "@interfaces/chat";
+import {useSession} from "next-auth/react";
 import { models } from "@interfaces/models";
+import { useChat } from "@context/ChatContext";
 
-function ChatComponent({ messages }: { messages: Message[] }) {
+function ChatComponent() {
+  const { selectedChat, sendMessage, createChat } = useChat();
+  const [message, setMessage] = React.useState("");
+  const { data } = useSession();
+  
   return (
     <div className="w-full flex flex-col my-3 mr-3">
       {/* Selector de modelo que ocupa todo el ancho */}
@@ -35,7 +40,7 @@ function ChatComponent({ messages }: { messages: Message[] }) {
 
       {/* Contenedor de mensajes que ocupa el espacio restante */}
       <div className="flex-1 h-0 overflow-auto mb-3 w-4/5 mx-auto">
-        <div className="flex flex-col gap-2">
+        {/* <div className="flex flex-col gap-2">
           {messages
             .slice()
             .reverse()
@@ -51,7 +56,7 @@ function ChatComponent({ messages }: { messages: Message[] }) {
                 {message.content}
               </div>
             ))}
-        </div>
+        </div> */}
       </div>
 
       {/* Input y botones al final */}
@@ -64,8 +69,12 @@ function ChatComponent({ messages }: { messages: Message[] }) {
           color="default"
           variant="bordered"
           className="flex-grow"
+          value={message}
+          onValueChange={setMessage}
         />
-        <Button isIconOnly color="default" variant="bordered">
+        <Button isIconOnly color="default" variant="bordered"
+        onClick={selectedChat === null ? () => createChat({name: message, userId: data?.user?.id as string}) : () => sendMessage(selectedChat.id as string, {content: message})}
+        >
           <IoSendOutline />
         </Button>
       </div>

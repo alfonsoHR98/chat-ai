@@ -1,36 +1,34 @@
 "use client";
 import React from "react";
-import { FaPlus } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
 import { TbLogout } from "react-icons/tb";
 import { Button, User } from "@nextui-org/react";
-import { SidebarProps, UserInt, Chat } from "@interfaces/chat";
+import { UserInt } from "@interfaces/chat";
 import { useSession } from "next-auth/react";
+import { useChat } from "@context/ChatContext";
 
-function Sidebar(chats: Chat[]) {
+function Sidebar() {
   const { data } = useSession();
   const user = data?.user as UserInt | undefined;
+  const { chats, loadChats, deleteChat } = useChat();
 
+  React.useEffect(() => {
+    loadChats(user?.id as string);
+  }, []);
+  
   return (
     <aside className="h-full w-64 flex flex-col gap-3 shadow-md shadow-neutral-600 bg-white">
       <div className="h-auto flex flex-col justify-center items-center py-3">
         <h1 className="text-xl font-bold ">Niuko Consultores</h1>
         <h2 className="text-sm font-semibold text-neutral-500">Chat Bot</h2>
       </div>
-      <Button
-        className="mx-3"
-        variant="bordered"
-        color="default"
-        startContent={<FaPlus />}
-      >
-        Nuevo chat
-      </Button>
-      <nav className="h-full flex-1 flex flex-col items-center justify-start">
-        <ul>
+      <nav className="h-full w-full flex-1 flex flex-col items-center justify-start overflow-y-auto">
+        <ul className="w-full">
           {chats ? (
             chats.map((chat) => (
-              <li key={chat.id} className="p-3 border-b border-neutral-200">
-                <h3 className="text-lg font-semibold">{chat.name}</h3>
-                <p className="text-sm text-neutral-500">Último mensaje</p>
+              <li key={chat.id} className="border border-neutral-200 rounded-md flex justify-between items-center m-2 p-2 text-neutral-800">
+                <h3 className="text-xl font-semibold">{chat.name}</h3>
+                <button onClick={async() => deleteChat(chat.id)}><FaTrash /></button>
               </li>
             ))
           ) : (
