@@ -25,7 +25,7 @@ function LoginPage() {
         {/* Sección Derecha */}
         <div className="w-[70%] sm:w-1/2 flex flex-col mx-4 sm:mx-8 gap-4 py-4 px-6 sm:p-0">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-2 sm:mb-4">
-            Niuko GPT <span className="text-neutral-400">Chatbot</span>
+            Open AI <span className="text-neutral-400">Chatbot</span>
           </h1>
           <p className="text-center text-sm sm:text-base lg:text-lg text-gray-500">
             Utiliza nuestro chat para obtener respuestas rápidas y precisas a
